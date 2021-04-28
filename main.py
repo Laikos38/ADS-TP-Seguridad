@@ -15,12 +15,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Determinar OS
         self.determine_os()
-
-        # Virus Total Handler
-        self.vt_handler = VtHandler()
-
+        
         # QMessageBox
         self.msg_box = QtWidgets.QMessageBox
+
+        # Virus Total Handler
+        try:
+            self.vt_handler = VtHandler()
+        except ValueError:
+            self.msg_box.critical(self, 'Error', 'No se detectó una API Key válida de Virus Total.')
+            os._exit(1)
 
         # Thread
         self.thread = QtCore.QThread()
