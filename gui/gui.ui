@@ -240,7 +240,15 @@
    <addaction name="menuOpciones"/>
    <addaction name="menuAyuda"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </widget>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>

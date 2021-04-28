@@ -31,8 +31,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.worker = self.vt_handler
         self.worker.moveToThread(self.thread)
         self.thread.started.connect(partial(self.vt_handler.scan_file, ""))
-        self.worker.started.connect(partial(self.uploadPb.setVisible, True))
-        self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
         self.worker.progress.connect(self.update_progress)
         self.worker.finished.connect(self.thread.quit)
 
@@ -62,20 +60,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
             self.clear_thread_connections()
             self.thread.started.connect(partial(self.vt_handler.scan_file, filename))
-            self.worker.progress.connect(self.update_progress)
-            self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
             self.thread.start()
 
+    def block_gui(self):
+        self.uploadBtn.setEnabled(False)
+        self.uploadPb.setVisible(True)
+
+    def unblock_gui(self):
+        self.uploadBtn.setEnabled(True)
+        self.uploadPb.setVisible(False)
+
     def update_progress(self, msg):
-        print(msg)
+        self.statusbar.showMessage(msg)
+
+    def show_response(self, analyses):
+        self.resultsTe.setPlainText(str(analyses.results))
 
     def clear_thread_connections(self):
         self.thread.started.disconnect()
         self.worker.progress.disconnect()
         self.worker.finished.disconnect()
         self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
-        self.worker.started.connect(partial(self.uploadPb.setVisible, True))
+        self.worker.finished.connect(self.unblock_gui)
+        self.worker.finished.connect(self.show_response)
+        self.worker.progress.connect(self.update_progress)
+        self.worker.started.connect(self.block_gui)
 
 
 def is_exe(fpath):

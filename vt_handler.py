@@ -18,7 +18,18 @@ class VtHandler(QObject):
     
     def scan_file(self, file_path):
         self.started.emit(None)
-        for i in range(0, 4):
-            sleep(1)
-            self.progress.emit(i)
-        self.finished.emit(None)
+        self.progress.emit("Uploading")
+        with open(file_path, "rb") as f:
+            analysis = self.client.scan_file(f)
+        while True:
+            analysis = self.client.get_object("/analyses/{}", analysis.id)
+            self.progress.emit(analysis.status.capitalize())
+            if analysis.status == "completed":
+                break
+            sleep(3)
+        analysis = self.parse_response(analysis)
+        self.finished.emit(analysis)
+
+    def parse_response(self, analyses):
+        # TODO: Parse JSON to human readable
+        return analyses
