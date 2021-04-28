@@ -1,5 +1,7 @@
 from gui.gui import *
 from platform import platform
+from functools import partial
+from vt_handler import VtHandler
 import re
 import os
 
@@ -7,11 +9,28 @@ import os
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
+
+        # Cargar GUI
         self.setupUi(self)
+
+        # Determinar OS
         self.determine_os()
+
+        # Virus Total Handler
+        self.vt_handler = VtHandler()
 
         # QMessageBox
         self.msg_box = QtWidgets.QMessageBox
+
+        # Thread
+        self.thread = QtCore.QThread()
+        self.worker = self.vt_handler
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(partial(self.vt_handler.scan_file, ""))
+        self.worker.started.connect(partial(self.uploadPb.setVisible, True))
+        self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
+        self.worker.progress.connect(self.update_progress)
+        self.worker.finished.connect(self.thread.quit)
 
         self.uploadPb.setVisible(False)
         self.uploadBtn.clicked.connect(self.open_file_dialog)
@@ -33,11 +52,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.os == 'windows':
             fileDialog.setNameFilter("*.exe")
         if fileDialog.exec_():
-            filenames = fileDialog.selectedFiles()
+            filename = fileDialog.selectedFiles()[0]
             if self.os == 'linux' or self.os == 'darwin':
-                if not is_exe(filenames[0]):
+                if not is_exe(filename[0]):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
-            print(filenames)
+            self.clear_thread_connections()
+            self.thread.started.connect(partial(self.vt_handler.scan_file, filename))
+            self.worker.progress.connect(self.update_progress)
+            self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
+            self.thread.start()
+
+    def update_progress(self, msg):
+        print(msg)
+
+    def clear_thread_connections(self):
+        self.thread.started.disconnect()
+        self.worker.progress.disconnect()
+        self.worker.finished.disconnect()
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(partial(self.uploadPb.setVisible, False))
+        self.worker.started.connect(partial(self.uploadPb.setVisible, True))
 
 
 def is_exe(fpath):
