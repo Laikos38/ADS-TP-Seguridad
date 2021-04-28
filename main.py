@@ -1,5 +1,6 @@
 from gui.gui import *
 from platform import platform
+import re
 import os
 
 
@@ -17,11 +18,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def determine_os(self):
         so = platform()
-        if 'linux' in so:
+        if re.search("linux", so, re.IGNORECASE):
             self.os = 'linux'
-        elif 'windows' in so:
+        elif re.search("windows", so, re.IGNORECASE):
             self.os = 'windows'
-        elif 'darwin' in so:
+        elif re.search("darwin", so, re.IGNORECASE):
             self.os = 'darwin'
         else:
             self.os = 'ukn'
@@ -36,7 +37,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.os == 'linux' or self.os == 'darwin':
                 if not is_exe(filenames[0]):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
-
             print(filenames)
 
 
