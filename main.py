@@ -58,6 +58,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.os == 'linux' or self.os == 'darwin':
                 if not is_exe(filename[0]):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
+                    return
             self.clear_thread_connections()
             self.thread.started.connect(partial(self.vt_handler.scan_file, filename))
             self.thread.start()
@@ -90,7 +91,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 def is_exe(fpath):
-    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+    return os.access(fpath, os.X_OK)
 
 
 if __name__ == "__main__":
