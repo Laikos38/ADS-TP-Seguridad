@@ -42,8 +42,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.crossMaliciousLbl.setVisible(False)
         self.checkSuspiciousLbl.setVisible(False)
         self.crossSuspiciousLbl.setVisible(False)
-        self.checkUndetectedLbl.setVisible(False)
-        self.crossUndetectedLbl.setVisible(False)
         self.uploadBtn.clicked.connect(self.open_file_dialog)
 
     def determine_os(self):
@@ -85,22 +83,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_response(self, responseDict):
         self.resultsTe.setPlainText(responseDict['full_results'])
-        if responseDict['resume_stats']['harmless']:
+        if responseDict['resume_stats']['harmless'] <= 0:
             self.checkHarmlessLbl.setVisible(True)
         else:
             self.crossHarmlessLbl.setVisible(True)
-        if responseDict['resume_stats']['malicious']:
+        if responseDict['resume_stats']['malicious'] <= 0:
             self.checkMaliciousLbl.setVisible(True)
         else:
             self.crossMaliciousLbl.setVisible(True)
-        if responseDict['resume_stats']['suspicious']:
+        if responseDict['resume_stats']['suspicious'] <= 0:
             self.checkSuspiciousLbl.setVisible(True)
         else:
             self.crossSuspiciousLbl.setVisible(True)
-        if responseDict['resume_stats']['undetected']:
-            self.checkUndetectedLbl.setVisible(True)
-        else:
-            self.crossUndetectedLbl.setVisible(True)
         self.tabWidget.setCurrentIndex(1)
 
     def clear_thread_connections(self):

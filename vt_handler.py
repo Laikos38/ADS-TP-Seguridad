@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 import os
 import vt
-import json
 from time import sleep
 
 
@@ -33,17 +32,15 @@ class VtHandler(QObject):
 
     def parse_response(self, analyses):
         stats = {
-            'harmless': analyses.stats["harmless"]>0,
-            'malicious': analyses.stats["malicious"]>0,
-            'suspicious': analyses.stats["suspicious"]>0,
-            'undetected': analyses.stats["undetected"]>0
+            'harmless': analyses.stats["harmless"],
+            'malicious': analyses.stats["malicious"],
+            'suspicious': analyses.stats["suspicious"]
         }
          
         resultsDict = analyses.to_dict()['attributes']['results']
         resultStr = ""
         for k, v in resultsDict.items():
             resultStr += "Antivirus " + k + ": " + v['category'] + ".\n"
-        print("\n\n*** RESULT: \n\n"+resultStr)
         response = {
             "resume_stats": stats,
             "full_results": resultStr
