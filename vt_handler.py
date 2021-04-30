@@ -32,11 +32,11 @@ class VtHandler(QObject):
         self.finished.emit(response)
 
     def parse_response(self, analyses):
-        stats = { 
-            'harmless': str(analyses.stats["harmless"]),
-            'malicious': str(analyses.stats["malicious"]),
-            'suspicious': str(analyses.stats["suspicious"]),
-            'undetected': str(analyses.stats["undetected"])
+        stats = {
+            'harmless': analyses.stats["harmless"]>0,
+            'malicious': analyses.stats["malicious"]>0,
+            'suspicious': analyses.stats["suspicious"]>0,
+            'undetected': analyses.stats["undetected"]>0
         }
          
         resultsDict = analyses.to_dict()['attributes']['results']

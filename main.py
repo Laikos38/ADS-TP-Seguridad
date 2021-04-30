@@ -84,8 +84,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage(msg)
 
     def show_response(self, responseDict):
-        
         self.resultsTe.setPlainText(responseDict['full_results'])
+        if responseDict['resume_stats']['harmless']:
+            self.checkHarmlessLbl.setVisible(True)
+        else:
+            self.crossHarmlessLbl.setVisible(True)
+        if responseDict['resume_stats']['malicious']:
+            self.checkMaliciousLbl.setVisible(True)
+        else:
+            self.crossMaliciousLbl.setVisible(True)
+        if responseDict['resume_stats']['suspicious']:
+            self.checkSuspiciousLbl.setVisible(True)
+        else:
+            self.crossSuspiciousLbl.setVisible(True)
+        if responseDict['resume_stats']['undetected']:
+            self.checkUndetectedLbl.setVisible(True)
+        else:
+            self.crossUndetectedLbl.setVisible(True)
+        self.tabWidget.setCurrentIndex(1)
 
     def clear_thread_connections(self):
         self.thread.started.disconnect()

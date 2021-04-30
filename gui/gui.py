@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.label_5)
         self.resultsTe = QtWidgets.QPlainTextEdit(self.verticalLayoutWidget_2)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(11)
         self.resultsTe.setFont(font)
         self.resultsTe.setReadOnly(True)
         self.resultsTe.setObjectName("resultsTe")
