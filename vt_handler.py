@@ -32,10 +32,21 @@ class VtHandler(QObject):
         self.finished.emit(response)
 
     def parse_response(self, analyses):
-        resultString = " El archivo fue detectado como inofensivo por " + str(analyses.stats["harmless"]) + " antivirus\n "
-        resultString += "Detectado como malicioso por " + str(analyses.stats["malicious"]) + " antivirus\n "
-        resultString += "Detectado como sospechoso por " + str(analyses.stats["suspicious"]) + " antivirus\n "
-        resultString += "Clasificado como 'No detectado' por " + str(analyses.stats["undetected"]) + " antivirus\n "
+        stats = { 
+            'harmless': str(analyses.stats["harmless"]),
+            'malicious': str(analyses.stats["malicious"]),
+            'suspicious': str(analyses.stats["suspicious"]),
+            'undetected': str(analyses.stats["undetected"])
+        }
+         
+        resultsDict = analyses.to_dict()['attributes']['results']
+        resultStr = ""
+        for k, v in resultsDict.items():
+            resultStr += "Antivirus " + k + ": " + v['category'] + ".\n"
+        print("\n\n*** RESULT: \n\n"+resultStr)
+        response = {
+            "resume_stats": stats,
+            "full_results": resultStr
+        }
 
-        print(resultString)
-        return resultString
+        return response
