@@ -64,7 +64,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if fileDialog.exec_():
             filename = fileDialog.selectedFiles()[0]
             if self.os == 'linux' or self.os == 'darwin':
-                if not is_exe(filename[0]):
+                if not is_exe(filename):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
                     return
             self.clear_thread_connections()
