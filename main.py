@@ -74,7 +74,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage(msg)
 
     def show_response(self, analyses):
-        self.resultsTe.setPlainText(str(analyses.results))
+        print("Analyses \n")
+        print(analyses)
+        self.resultsTe.setPlainText(analyses)
 
     def clear_thread_connections(self):
         self.thread.started.disconnect()

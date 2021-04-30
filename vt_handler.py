@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 import os
 import vt
+import json
 from time import sleep
 
 
@@ -27,9 +28,14 @@ class VtHandler(QObject):
             if analysis.status == "completed":
                 break
             sleep(3)
-        analysis = self.parse_response(analysis)
-        self.finished.emit(analysis)
+        response = self.parse_response(analysis)
+        self.finished.emit(response)
 
     def parse_response(self, analyses):
-        # TODO: Parse JSON to human readable
-        return analyses
+        resultString = " El archivo fue detectado como inofensivo por " + str(analyses.stats["harmless"]) + " antivirus\n "
+        resultString += "Detectado como malicioso por " + str(analyses.stats["malicious"]) + " antivirus\n "
+        resultString += "Detectado como sospechoso por " + str(analyses.stats["suspicious"]) + " antivirus\n "
+        resultString += "Clasificado como 'No detectado' por " + str(analyses.stats["undetected"]) + " antivirus\n "
+
+        print(resultString)
+        return resultString
