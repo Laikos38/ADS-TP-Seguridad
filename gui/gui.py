@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './gui/gui.ui'
+# Form implementation generated from reading ui file 'gui/gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(712, 476)
         MainWindow.setMinimumSize(QtCore.QSize(712, 476))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./gui\\icono.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icono/icono.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addItem(spacerItem)
         self.label_2 = QtWidgets.QLabel(self.tab)
         self.label_2.setText("")
-        self.label_2.setPixmap(QtGui.QPixmap("./gui\\vt-enterprise_chico.png"))
+        self.label_2.setPixmap(QtGui.QPixmap(":/logo/vt-enterprise_chico.png"))
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
@@ -221,6 +221,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Results"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionAcerca_de.setText(_translate("MainWindow", "About"))
+#import resources_rc
 
 
 if __name__ == "__main__":

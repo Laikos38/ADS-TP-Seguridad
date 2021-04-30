@@ -20,8 +20,8 @@
    <string>ADS </string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>icono.ico</normaloff>icono.ico</iconset>
+   <iconset resource="resources.qrc">
+    <normaloff>:/icono/icono.ico</normaloff>:/icono/icono.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -57,7 +57,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>vt-enterprise_chico.png</pixmap>
+           <pixmap resource="resources.qrc">:/logo/vt-enterprise_chico.png</pixmap>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -434,6 +434,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

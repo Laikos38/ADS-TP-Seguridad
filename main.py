@@ -1,4 +1,5 @@
 from gui.gui import *
+from gui import resources_rc
 from platform import platform
 from functools import partial
 from vt_handler import VtHandler
@@ -48,16 +49,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         so = platform()
         if re.search("linux", so, re.IGNORECASE):
             self.os = 'linux'
-            icon.addPixmap(QtGui.QPixmap("gui/icono.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.label_2.setPixmap(QtGui.QPixmap("gui/vt-enterprise_chico.png"))
         elif re.search("windows", so, re.IGNORECASE):
             self.os = 'windows'
-            icon.addPixmap(QtGui.QPixmap("./gui\\icono.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.label_2.setPixmap(QtGui.QPixmap("./gui\\vt-enterprise_chico.png"))
         elif re.search("darwin", so, re.IGNORECASE):
             self.os = 'darwin'
-            icon.addPixmap(QtGui.QPixmap("gui/icono.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.label_2.setPixmap(QtGui.QPixmap("gui/vt-enterprise_chico.png"))
         else:
             self.os = 'ukn'
 
