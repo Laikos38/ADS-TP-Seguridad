@@ -34,7 +34,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.worker.progress.connect(self.update_progress)
         self.worker.finished.connect(self.thread.quit)
 
+        # Ocultar items
         self.uploadPb.setVisible(False)
+        self.checkHarmlessLbl.setVisible(False)
+        self.crossHarmlessLbl.setVisible(False)
+        self.checkMaliciousLbl.setVisible(False)
+        self.crossMaliciousLbl.setVisible(False)
+        self.checkSuspiciousLbl.setVisible(False)
+        self.crossSuspiciousLbl.setVisible(False)
+        self.checkUndetectedLbl.setVisible(False)
+        self.crossUndetectedLbl.setVisible(False)
         self.uploadBtn.clicked.connect(self.open_file_dialog)
 
     def determine_os(self):
