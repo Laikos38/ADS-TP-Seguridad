@@ -11,14 +11,15 @@ class VtHandler(QObject):
 
     def __init__(self):
         super().__init__()
-        apikey = os.getenv('VT_API_KEY')
-        if apikey is None:
+        self.apikey = os.getenv('VT_API_KEY')
+        if self.apikey is None:
             raise ValueError
-        self.client = vt.Client(apikey)
+        self.client = vt.Client(self.apikey)
     
     def scan_file(self, file_path):
         self.started.emit(None)
         self.progress.emit("Uploading")
+        self.client = vt.Client(self.apikey)
         with open(file_path, "rb") as f:
             analysis = self.client.scan_file(f)
         while True:
