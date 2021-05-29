@@ -130,3 +130,9 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# BD
+db.ADS_VT.db
+
+# upload files
+uploads/
