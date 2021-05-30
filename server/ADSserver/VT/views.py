@@ -1,4 +1,3 @@
-from ssl import enum_certificates
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 import hashlib
