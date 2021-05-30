@@ -14,10 +14,8 @@ Trabajo práctico para Arquitectura de Software 2021.
 ## Ejecutar
 Puede descargar los ejecutables desde la sección de Releases, o bien clonar el repositorio ejecutando:
 
- `git clone https://github.com/Laikos38/ADS-TP-Seguridad.git && cd ADS-TP-Seguridad`
+ `git clone https://github.com/Laikos38/ADS-TP-Seguridad.git && cd ADS-TP-Seguridad/client`
 
  `pip install -r requirements.txt`
-
- `cd ./client`
 
  `python3 main.py`
