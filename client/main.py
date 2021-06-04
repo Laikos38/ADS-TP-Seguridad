@@ -102,6 +102,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.crossSuspiciousLbl.setVisible(True)
         self.tabWidget.setCurrentIndex(1)
+        self.update_progress("Finished")
 
     def clear_thread_connections(self):
         self.thread.started.disconnect()

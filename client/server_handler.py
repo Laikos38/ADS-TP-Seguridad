@@ -22,8 +22,7 @@ class ServerHandler(QObject):
         hash_result = self.check_for_analysis_hash(hash)
 
         if hash_result is None:
-            upload_result = self.upload_file(filePath)     
-            print(upload_result)           
+            upload_result = self.upload_file(filePath)
             self.finished.emit(upload_result)
         else: 
             self.finished.emit(hash_result)
