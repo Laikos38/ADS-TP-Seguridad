@@ -2,10 +2,10 @@ from gui.gui import *
 from gui import resources_rc
 from platform import platform
 from functools import partial
-from vt_handler import VtHandler
+from server_handler import ServerHandler
 import re
+import hashlib
 import os
-
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
@@ -22,16 +22,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Virus Total Handler
         try:
-            self.vt_handler = VtHandler()
+            self.server_handler = ServerHandler()
         except ValueError:
             self.msg_box.critical(self, 'Error', 'No se detectó una API Key válida de Virus Total.')
             os._exit(1)
 
         # Thread
         self.thread = QtCore.QThread()
-        self.worker = self.vt_handler
+        self.worker = self.server_handler
         self.worker.moveToThread(self.thread)
-        self.thread.started.connect(partial(self.vt_handler.scan_file, ""))
+        self.thread.started.connect(partial(self.server_handler.get_analysis, ""))
         self.worker.progress.connect(self.update_progress)
         self.worker.finished.connect(self.thread.quit)
 
@@ -68,7 +68,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.msg_box.critical(self, 'Error', "Esto no es un ejecutable.")
                     return
             self.clear_thread_connections()
-            self.thread.started.connect(partial(self.vt_handler.scan_file, filename))
+
+            
+            self.thread.started.connect(partial(self.server_handler.get_analysis, filename))
             self.thread.start()
 
     def block_gui(self):
@@ -83,16 +85,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage(msg)
 
     def show_response(self, responseDict):
-        self.resultsTe.setPlainText(responseDict['full_results'])
-        if responseDict['resume_stats']['harmless'] <= 0:
+        if responseDict == 'Error':
+            self.statusbar.showMessage('Internal Server Error. Contact the administrator')
+            return
+        self.resultsTe.setPlainText(responseDict['analysis']['antiviruses_results'])
+        if responseDict['analysis']['harmless']:
             self.checkHarmlessLbl.setVisible(True)
         else:
             self.crossHarmlessLbl.setVisible(True)
-        if responseDict['resume_stats']['malicious'] <= 0:
+        if responseDict['analysis']['malicious']:
             self.checkMaliciousLbl.setVisible(True)
         else:
             self.crossMaliciousLbl.setVisible(True)
-        if responseDict['resume_stats']['suspicious'] <= 0:
+        if responseDict['analysis']['suspicious']:
             self.checkSuspiciousLbl.setVisible(True)
         else:
             self.crossSuspiciousLbl.setVisible(True)
@@ -106,7 +111,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.worker.finished.connect(self.unblock_gui)
         self.worker.finished.connect(self.show_response)
         self.worker.progress.connect(self.update_progress)
-        self.worker.started.connect(self.block_gui)
+        self.worker.started.connect(self.block_gui)  
 
 
 def is_exe(fpath):
